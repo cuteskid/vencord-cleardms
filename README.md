@@ -76,4 +76,4 @@ Deleting messages is irreversible. Use responsibly.
 
 ## Author
 
-* **cuteskid**
+* **cuteskid** https://guns.lol/cuteskid
