@@ -12,7 +12,7 @@ import {
     ChannelStore,
     Menu,
     RestAPI,
-    Toasts,
+    showToast,
     UserStore
 } from "@webpack/common";
 import type { Channel, User } from "discord-types/general";
@@ -66,37 +66,31 @@ async function clearDMs(channel: Channel) {
     const currentUser = UserStore.getCurrentUser();
     if (!currentUser) return;
 
-    Toasts.show({
-        message: "Fetching messages...",
-        id: Toasts.genId(),
-        type: Toasts.Type.MESSAGE,
+    showToast({
+        text: "Fetching messages..."
     });
 
     let messages: any[];
     try {
         messages = await fetchAllMessages(channel.id, currentUser.id);
     } catch (e) {
-        Toasts.show({
-            message: "Failed to fetch messages",
-            id: Toasts.genId(),
-            type: Toasts.Type.FAILURE,
+        showToast({
+            text: "Failed to fetch messages",
+            variant: "critical"
         });
         return;
     }
 
     if (messages.length === 0) {
-        Toasts.show({
-            message: "No messages found to delete",
-            id: Toasts.genId(),
-            type: Toasts.Type.FAILURE,
+        showToast({
+            text: "No messages found to delete",
+            variant: "critical"
         });
         return;
     }
 
-    Toasts.show({
-        message: `Deleting ${messages.length} message(s)...`,
-        id: Toasts.genId(),
-        type: Toasts.Type.MESSAGE,
+    showToast({
+        text: `Deleting ${messages.length} message(s)...`
     });
 
     let deletedCount = 0;
@@ -112,10 +106,9 @@ async function clearDMs(channel: Channel) {
         await new Promise(resolve => setTimeout(resolve, delay));
     }
 
-    Toasts.show({
-        message: `Successfully deleted ${deletedCount} message(s)`,
-        id: Toasts.genId(),
-        type: Toasts.Type.SUCCESS,
+    showToast({
+        text: `Successfully deleted ${deletedCount} message(s)`,
+        variant: "success"
     });
 }
 
